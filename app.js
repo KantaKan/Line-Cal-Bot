@@ -43,6 +43,25 @@ async function handleEvent(event) {
   }
 }
 
+// async function getCaloriesFromGemini(foodName) {
+//   try {
+//     const client = new GoogleGenerativeAI({
+//       apiKey: process.env.GEMINI_API_KEY,
+//     });
+
+//     const response = await client.generateText({
+//       model: "models/gemini-1.5-flash",
+//       prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
+//     });
+//     console.log("Gemini API response:", response);
+//     const calories = extractCaloriesFromThaiResponse(response.result);
+//     return calories;
+//   } catch (error) {
+//     console.error("Error calling Gemini API:", error);
+//     return null;
+//   }
+// }
+
 async function getCaloriesFromGemini(foodName) {
   try {
     const client = new GoogleGenerativeAI({
@@ -53,12 +72,24 @@ async function getCaloriesFromGemini(foodName) {
       model: "models/gemini-1.5-flash",
       prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
     });
+
     console.log("Gemini API response:", response);
+
     const calories = extractCaloriesFromThaiResponse(response.result);
     return calories;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     return null;
+  }
+}
+
+function extractCaloriesFromThaiResponse(responseText) {
+  // Example using a regular expression (this might need adjustments)
+  const calorieMatch = responseText.match(/(\d+)\s*calories?/i);
+  if (calorieMatch) {
+    return parseInt(calorieMatch[1], 10);
+  } else {
+    return null; // Or handle the case where calories aren't found
   }
 }
 
