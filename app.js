@@ -45,6 +45,7 @@ async function handleEvent(event) {
 
 async function getCaloriesFromGemini(foodName) {
   try {
+    console.log(GenerativeLanguageClient);
     const client = new GenerativeLanguageClient({
       apiKey: process.env.GEMINI_API_KEY,
     });
