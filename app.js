@@ -47,12 +47,14 @@ async function getCaloriesFromGemini(foodName) {
   try {
     const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-    const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = client.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-    const response = await model.generateContent(`What are the calories in ${foodName} ?`);
+    const result = await model.generateContent(`ใน ${foodName} มีประมาณกี่แคล ประมาณมาได้เลยไม่ต้องห่วง`);
 
-    const caloriesText = response.result;
-    const calories = extractCaloriesFromThaiResponse(caloriesText);
+    const caloriesText = result.response.text();
+    console.log(caloriesText);
+    const calories = extractCalorieInfo(caloriesText);
+
     return calories;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
@@ -60,28 +62,17 @@ async function getCaloriesFromGemini(foodName) {
   }
 }
 
-function extractCaloriesFromThaiResponse(responseText) {
-  // Example using a regular expression (this might need adjustments)
-  const calorieMatch = responseText.match(/(\d+)\s*calories?/i);
-  if (calorieMatch) {
-    return parseInt(calorieMatch[1], 10);
-  } else {
-    return null; // Or handle the case where calories aren't found
-  }
-}
+function extractCalorieInfo(text) {
+  // ... (rest of your code)
 
-function convertThaiNumeralsToArabic(thaiNumerals) {
-  const thaiDigits = "๐๑๒๓๔๕๖๗๘๙";
-  let arabicNumerals = "";
-  for (let i = 0; i < thaiNumerals.length; i++) {
-    const digit = thaiDigits.indexOf(thaiNumerals[i]);
-    if (digit !== -1) {
-      arabicNumerals += digit;
-    } else {
-      arabicNumerals += thaiNumerals[i];
-    }
+  // Match the specific pattern you're looking for
+  const match = text.match(/ประมาณ\s*\*\*(\d+(?:-\d+)?)\s*แคลอรี่\*\*/);
+
+  if (match) {
+    return match[1]; // Return the captured calorie range
+  } else {
+    return null; // Or handle the case where the pattern is not found
   }
-  return arabicNumerals;
 }
 
 app.listen(process.env.PORT || 3000, () => {
