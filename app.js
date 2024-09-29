@@ -45,11 +45,9 @@ async function handleEvent(event) {
 
 async function getCaloriesFromGemini(foodName) {
   try {
-    const client = new GoogleGenerativeAI({
-      apiKey: process.env.GEMINI_API_KEY,
-    });
+    const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-    const model = client.generativeModel("models/gemini-1.5-flash"); // Get the model
+    const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const response = await model.generateContent({
       // Use generateContent
