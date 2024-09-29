@@ -56,7 +56,7 @@ async function getCaloriesFromGemini(foodName) {
 
     console.log("Gemini API response:", response);
 
-    const calories = extractCaloriesFromThaiResponse(response.result);
+    const calories = response.result;
     return calories;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
