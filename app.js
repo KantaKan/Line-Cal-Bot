@@ -1,6 +1,6 @@
 const express = require("express");
 const line = require("@line/bot-sdk");
-const { GenerativeLanguageClient } = require("@google-ai/generativelanguage");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 
 const app = express();
@@ -45,8 +45,7 @@ async function handleEvent(event) {
 
 async function getCaloriesFromGemini(foodName) {
   try {
-    console.log(GenerativeLanguageClient);
-    const client = new GenerativeLanguageClient({
+    const client = new GoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY,
     });
 
