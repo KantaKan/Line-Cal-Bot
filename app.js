@@ -43,33 +43,16 @@ async function handleEvent(event) {
   }
 }
 
-// async function getCaloriesFromGemini(foodName) {
-//   try {
-//     const client = new GoogleGenerativeAI({
-//       apiKey: process.env.GEMINI_API_KEY,
-//     });
-
-//     const response = await client.generateText({
-//       model: "models/gemini-1.5-flash",
-//       prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
-//     });
-//     console.log("Gemini API response:", response);
-//     const calories = extractCaloriesFromThaiResponse(response.result);
-//     return calories;
-//   } catch (error) {
-//     console.error("Error calling Gemini API:", error);
-//     return null;
-//   }
-// }
-
 async function getCaloriesFromGemini(foodName) {
   try {
     const client = new GoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY,
     });
 
-    const response = await client.generateText({
-      model: "models/gemini-1.5-flash",
+    const model = client.generativeModel("models/gemini-1.5-flash"); // Get the model
+
+    const response = await model.generateContent({
+      // Use generateContent
       prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
     });
 
@@ -90,15 +73,6 @@ function extractCaloriesFromThaiResponse(responseText) {
     return parseInt(calorieMatch[1], 10);
   } else {
     return null; // Or handle the case where calories aren't found
-  }
-}
-
-function extractCaloriesFromThaiResponse(geminiResponse) {
-  const match = geminiResponse.match(/(\d+|[\u0E50-\u0E59]+)\s*แคลอรี่/);
-  if (match) {
-    return convertThaiNumeralsToArabic(match[1]);
-  } else {
-    return null;
   }
 }
 
