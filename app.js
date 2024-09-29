@@ -13,6 +13,7 @@ const config = {
 const client = new line.Client(config);
 
 app.post("/callback", line.middleware(config), (req, res) => {
+  console.log("Incoming request:", req.body);
   Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((err) => {
@@ -52,7 +53,7 @@ async function getCaloriesFromGemini(foodName) {
       model: "models/gemini-pro",
       prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
     });
-
+    console.log("Gemini API response:", response);
     const calories = extractCaloriesFromThaiResponse(response.result);
     return calories;
   } catch (error) {
