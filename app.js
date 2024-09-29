@@ -49,14 +49,10 @@ async function getCaloriesFromGemini(foodName) {
 
     const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const response = await model.generateContent({
-      // Use generateContent
-      prompt: `What are the calories in ${foodName} (Thai: ${foodName})?`,
-    });
+    const response = await model.generateContent(`What are the calories in ${foodName} ?`);
 
-    console.log("Gemini API response:", response);
-
-    const calories = response.result;
+    const caloriesText = response.result;
+    const calories = extractCaloriesFromThaiResponse(caloriesText);
     return calories;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
