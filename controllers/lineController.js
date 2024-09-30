@@ -1,4 +1,4 @@
-// controller.js (or your controller file)
+
 const User = require("../models/user");
 const geminiService = require("../services/geminiService");
 
@@ -36,12 +36,12 @@ async function handleEvent(event, client) {
 
       return client.replyMessage(event.replyToken, {
         type: "text",
-        text: `เป้าหมายแคลอรี่ต่อวันของคุณถูกตั้งค่าเป็น ${newGoal} แคลอรี่แล้ว`,
+        text: `Your daily calorie goal has been set to ${newGoal} calories`, // Updated text
       });
     } else {
       return client.replyMessage(event.replyToken, {
         type: "text",
-        text: "รูปแบบคำสั่งไม่ถูกต้อง กรุณาใช้คำสั่ง: set goal [จำนวนแคลอรี่]",
+        text: "Invalid command format. Please use: set goal [number of calories]", // Updated text
       });
     }
   }
@@ -64,7 +64,7 @@ async function handleEvent(event, client) {
 
     return client.replyMessage(event.replyToken, {
       type: "flex",
-      altText: `${messageText} มีประมาณ ${result.calories} แคลอรี่\nแคลอรี่ที่เหลือสำหรับวันนี้: ${caloriesLeft} แคลอรี่`,
+      altText: `${messageText} has approximately ${result.calories} calories\nRemaining calories for today: ${caloriesLeft} calories`,
       contents: {
         type: "bubble",
         hero: {
@@ -80,7 +80,7 @@ async function handleEvent(event, client) {
           contents: [
             {
               type: "text",
-              text: `${messageText} มีประมาณ ${result.calories} แคลอรี่`,
+              text: `${messageText} has approximately ${result.calories} calories`, // Updated text
               weight: "bold",
               size: "xl",
             },
@@ -97,18 +97,18 @@ async function handleEvent(event, client) {
                   contents: [
                     {
                       type: "text",
-                      text: "แคลอรี่ที่เหลือสำหรับวันนี้",
+                      text: "Remaining calories for today", // Updated text
                       color: "#aaaaaa",
                       size: "sm",
-                      flex: 3,
+                      flex: 1,
                     },
                     {
                       type: "text",
-                      text: `${caloriesLeft} แคลอรี่`,
+                      text: `${caloriesLeft} calories`, // Updated text
                       wrap: true,
                       color: "#666666",
                       size: "sm",
-                      flex: 5,
+                      flex: 1,
                     },
                   ],
                 },
@@ -121,7 +121,7 @@ async function handleEvent(event, client) {
   } else {
     return client.replyMessage(event.replyToken, {
       type: "text",
-      text: `ขออภัย ฉันไม่พบข้อมูลแคลอรี่สำหรับ ${messageText}`,
+      text: `Sorry, I couldn't find calorie information for ${messageText}`, // Updated text
     });
   }
 }
