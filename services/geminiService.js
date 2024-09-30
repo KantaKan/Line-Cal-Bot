@@ -14,9 +14,7 @@ exports.getCaloriesAndImageFromGemini = async (foodName) => {
     const calorieInfo = calorieUtils.extractCalorieInfo(caloriesText);
 
     // Generate image
-    const imageResult = await model.generateImage({
-      prompt: `รูปภาพของ ${foodName}`,
-    });
+    const imageResult = await model.generateImage(`รูปภาพของ ${foodName}`);
     const imageUrl = imageResult.response.imageUrl;
     console.log("Generated Image URL:", imageUrl);
 
