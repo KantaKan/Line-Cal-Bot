@@ -2,9 +2,11 @@ const express = require("express");
 const line = require("@line/bot-sdk");
 const mongoose = require("./config/database");
 const lineController = require("./controllers/lineController");
+const helmet = require("helmet");
 require("dotenv").config();
 
 const app = express();
+app.use(helmet());
 
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
