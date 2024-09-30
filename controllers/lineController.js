@@ -51,18 +51,70 @@ async function handleEvent(event, client) {
     user.caloriesConsumed = 0;
   }
 
-  const calories = await geminiService.getCaloriesFromGemini(messageText);
+  const result = await geminiService.getCaloriesAndImageFromGemini(messageText);
 
-  if (calories) {
-    user.caloriesConsumed += calories;
+  if (result) {
+    user.caloriesConsumed += result.calories;
     user.lastUpdated = new Date();
     await user.save();
 
     const caloriesLeft = user.dailyCalorieGoal - user.caloriesConsumed;
 
     return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: `${messageText} มีประมาณ ${calories} แคลอรี่\nแคลอรี่ที่เหลือสำหรับวันนี้: ${caloriesLeft} แคลอรี่`,
+      type: "flex",
+      altText: `${messageText} มีประมาณ ${result.calories} แคลอรี่\nแคลอรี่ที่เหลือสำหรับวันนี้: ${caloriesLeft} แคลอรี่`,
+      contents: {
+        type: "bubble",
+        hero: {
+          type: "image",
+          url: result.imageUrl,
+          size: "full",
+          aspectRatio: "20:13",
+          aspectMode: "cover",
+        },
+        body: {
+          type: "box",
+          layout: "vertical",
+          contents: [
+            {
+              type: "text",
+              text: `${messageText} มีประมาณ ${result.calories} แคลอรี่`,
+              weight: "bold",
+              size: "xl",
+            },
+            {
+              type: "box",
+              layout: "vertical",
+              margin: "lg",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "box",
+                  layout: "baseline",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "แคลอรี่ที่เหลือสำหรับวันนี้",
+                      color: "#aaaaaa",
+                      size: "sm",
+                      flex: 1,
+                    },
+                    {
+                      type: "text",
+                      text: `${caloriesLeft} แคลอรี่`,
+                      wrap: true,
+                      color: "#666666",
+                      size: "sm",
+                      flex: 5,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
     });
   } else {
     return client.replyMessage(event.replyToken, {
