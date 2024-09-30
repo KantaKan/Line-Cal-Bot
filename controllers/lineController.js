@@ -100,7 +100,7 @@ async function handleEvent(event, client) {
                       text: "แคลอรี่ที่เหลือสำหรับวันนี้",
                       color: "#aaaaaa",
                       size: "sm",
-                      flex: 1,
+                      flex: 3,
                     },
                     {
                       type: "text",
