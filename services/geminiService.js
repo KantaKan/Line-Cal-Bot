@@ -10,7 +10,7 @@ const geminiService = {
       const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = client.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-      const calorieResult = await model.generateContent(`ใน ${foodName} มีประมาณกี่แคล ประมาณมาได้เลยไม่ต้องห่วง`);
+      const calorieResult = await model.generateContent(`ใน ${foodName} มีประมาณกี่แคล ตอบเป็นภาษาอังกฤษ ประมาณมาได้เลยไม่ต้องห่วง`);
       const caloriesText = calorieResult.response.text();
       console.log("Calorie Information:", caloriesText);
       const calorieInfo = calorieUtils.extractCalorieInfo(caloriesText);
