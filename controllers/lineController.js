@@ -1,4 +1,3 @@
-
 const User = require("../models/user");
 const geminiService = require("../services/geminiService");
 
@@ -27,7 +26,7 @@ async function handleEvent(event, client) {
     user = new User({ userId });
   }
 
-  if (messageText.toLowerCase().startsWith("set goal")) {
+  if (messageText.toLowerCase().startsWith("ตั้งเป้าหมาย")) {
     const parts = messageText.split(" ");
     if (parts.length === 3 && !isNaN(parts[2])) {
       const newGoal = parseInt(parts[2]);
@@ -36,12 +35,12 @@ async function handleEvent(event, client) {
 
       return client.replyMessage(event.replyToken, {
         type: "text",
-        text: `Your daily calorie goal has been set to ${newGoal} calories`, // Updated text
+        text: `ตั้งเป้าหมายแคลอรี่ต่อวันของคุณเป็น ${newGoal} แคลอรี่แล้ว`,
       });
     } else {
       return client.replyMessage(event.replyToken, {
         type: "text",
-        text: "Invalid command format. Please use: set goal [number of calories]", // Updated text
+        text: "รูปแบบคำสั่งไม่ถูกต้อง กรุณาใช้: ตั้งเป้าหมาย [จำนวนแคลอรี่]",
       });
     }
   }
@@ -64,7 +63,7 @@ async function handleEvent(event, client) {
 
     return client.replyMessage(event.replyToken, {
       type: "flex",
-      altText: `${messageText} has approximately ${result.calories} calories\nRemaining calories for today: ${caloriesLeft} calories`,
+      altText: `${messageText} มีประมาณ ${result.calories} แคลอรี่\nแคลอรี่คงเหลือวันนี้: ${caloriesLeft} แคลอรี่`,
       contents: {
         type: "bubble",
         hero: {
@@ -80,9 +79,10 @@ async function handleEvent(event, client) {
           contents: [
             {
               type: "text",
-              text: `${messageText} has approximately ${result.calories} calories`, // Updated text
+              text: `${messageText} มีประมาณ ${result.calories} แคลอรี่`,
               weight: "bold",
               size: "xl",
+              wrap: true 
             },
             {
               type: "box",
@@ -97,15 +97,15 @@ async function handleEvent(event, client) {
                   contents: [
                     {
                       type: "text",
-                      text: "Remaining calories for today", // Updated text
+                      text: "แคลอรี่คงเหลือวันนี้",
                       color: "#aaaaaa",
                       size: "sm",
                       flex: 1,
                     },
                     {
                       type: "text",
-                      text: `${caloriesLeft} calories`, // Updated text
-                      wrap: true,
+                      text: `${caloriesLeft} แคลอรี่`,
+                      wrap: true, 
                       color: "#666666",
                       size: "sm",
                       flex: 1,
@@ -121,7 +121,7 @@ async function handleEvent(event, client) {
   } else {
     return client.replyMessage(event.replyToken, {
       type: "text",
-      text: `Sorry, I couldn't find calorie information for ${messageText}`, // Updated text
+      text: `ขออภัย ฉันไม่พบข้อมูลแคลอรี่สำหรับ ${messageText}`,
     });
   }
 }
