@@ -1,3 +1,4 @@
+// controller.js (or your controller file)
 const User = require("../models/user");
 const geminiService = require("../services/geminiService");
 
@@ -46,16 +47,17 @@ async function handleEvent(event, client) {
   }
 
   const now = new Date();
-  const lastUpdated = new Date(user.lastUpdated);
+  const lastUpdated = user.lastUpdated ? new Date(user.lastUpdated) : new Date(0);
+
   if (now.getDate() !== lastUpdated.getDate() || now.getMonth() !== lastUpdated.getMonth() || now.getFullYear() !== lastUpdated.getFullYear()) {
     user.caloriesConsumed = 0;
   }
 
-  const result = await geminiService.getCaloriesAndImageFromGemini(messageText);
+  const result = await geminiService.getCaloriesAndImage(messageText);
 
   if (result) {
     user.caloriesConsumed += result.calories;
-    user.lastUpdated = new Date();
+    user.lastUpdated = now;
     await user.save();
 
     const caloriesLeft = user.dailyCalorieGoal - user.caloriesConsumed;
