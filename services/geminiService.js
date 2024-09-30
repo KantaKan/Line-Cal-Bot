@@ -1,7 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const calorieUtils = require("../utils/calorieUtils");
 const fetch = require("node-fetch");
-require("dotenv").config();
+require("dotenv").config(); 
 
 const geminiService = {
   getCaloriesAndImage: async (foodName) => {
@@ -9,22 +8,20 @@ const geminiService = {
       const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = client.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-      
-      const prompt = `${foodName} has how many calories? Answer with this JSON format: { "calories": , "forImageSearch": }`; 
+      const prompt = `${foodName} has how many calories? Answer with this JSON format: { "calories": , "translatedName": } answer only number in calories and dont answer outside json format`;
 
       const result = await model.generateContent(prompt);
       const responseText = result.response.text();
       console.log("Gemini Response:", responseText);
 
-      
-      const data = JSON.parse(responseText); 
+      const data = JSON.parse(responseText);
 
-   
       const calories = data.calories;
-      const imageSearchKeyword = data.forImageSearch;
+      const imageSearchKeyword = data.translatedName; 
 
-     
-      const unsplashResponse = await fetch(`https://api.unsplash.com/search/photos?query=${imageSearchKeyword}&client_id=${process.env.UNSPLASH_API_KEY}`);
+      const unsplashResponse = await fetch(
+        `https://api.unsplash.com/search/photos?query=${imageSearchKeyword}&client_id=${process.env.UNSPLASH_API_KEY}`
+      );
       const unsplashData = await unsplashResponse.json();
 
       let imageUrl = null;
@@ -32,7 +29,8 @@ const geminiService = {
         imageUrl = unsplashData.results[0].urls.regular;
       } else {
         console.log("No image found on Unsplash for", imageSearchKeyword);
-        imageUrl = "https://res.cloudinary.com/dgtdr85d8/image/upload/v1727696615/unnamed_ehkjkw.png"; 
+        imageUrl =
+          "https://res.cloudinary.com/dgtdr85d8/image/upload/v1727696615/unnamed_ehkjkw.png"; 
       }
 
       return {
