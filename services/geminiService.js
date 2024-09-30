@@ -24,7 +24,7 @@ const geminiService = {
       } else {
         console.log("No image found on Unsplash for", foodName);
 
-        imageUrl = "https://img.freepik.com/free-photo/chicken-wings-barbecue-sweetly-sour-sauce-picnic-summer-menu-tasty-food-top-view-flat-lay_2829-6471.jpg";
+        imageUrl = "https://res.cloudinary.com/dgtdr85d8/image/upload/v1727696615/unnamed_ehkjkw.png";
       }
 
       return {
