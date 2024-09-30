@@ -17,6 +17,6 @@
     "express": "^4.21.0",
     "mongodb": "^6.9.0",
     "mongoose": "^8.7.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.7.0"
   }
 }
